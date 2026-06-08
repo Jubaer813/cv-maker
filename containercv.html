@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CV Maker</title>
+
+<style>
+
+body{
+    background:#f0f0f0;
+    font-family:"Times New Roman", serif;
+    margin:0;
+    padding:20px;
+    line-height:1.5;
+}
+
+#cv-container{
+    width:210mm;
+    min-height:297mm;
+    margin:auto;
+    background:white;
+    padding:15mm;
+    box-sizing:border-box;
+    box-shadow:0 0 10px rgba(0,0,0,.2);
+}
+
+.cv-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:20px;
+}
+
+.cv-title{
+    flex:1;
+    text-align:center;
+}
+
+.cv-title h1{
+    margin:0;
+    font-size:32px;
+}
+
+.cv-title h3{
+    margin:5px 0;
+}
+
+.editable-name{
+    margin-top:10px;
+    min-height:35px;
+    border:1px solid #ccc;
+    padding:8px;
+    border-radius:4px;
+    width:60%;
+    margin-left:auto;
+    margin-right:auto;
+    outline:none;
+}
+
+.editable-name:empty:before{
+    content:attr(data-placeholder);
+    color:#999;
+}
+
+.photo-box{
+    width:130px;
+    text-align:center;
+}
+
+.photo-box img{
+    width:120px;
+    height:150px;
+    border:1px solid #444;
+    object-fit:cover;
+}
+
+.section-title{
+    border-bottom:2px solid #000;
+    padding-bottom:5px;
+    margin-top:20px;
+}
+
+.btn{
+    padding:6px 12px;
+    cursor:pointer;
+    margin-top:10px;
+}
+
+.print-btn{
+    background:#0066cc;
+    color:white;
+    border:none;
+    padding:12px 25px;
+    font-size:18px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.print-area{
+    text-align:center;
+    margin-top:30px;
+}
+
+@page{
+    size:A4;
+    margin:15mm;
+}
+
+@media(max-width:768px){
+
+    #cv-container{
+        width:100%;
+        padding:10px;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .cv-header{
+        flex-direction:column;
+        align-items:center;
+    }
+
+    .photo-box{
+        margin-top:15px;
+    }
+
+    .cv-title h1{
+        font-size:26px;
+    }
+
+    .editable-name{
+        width:90%;
+    }
+
+}
+
+@media print{
+
+    body{
+        background:white;
+        padding:0;
+    }
+
+    #cv-container{
+        width:100%;
+        min-height:auto;
+        box-shadow:none;
+        padding:0;
+    }
+
+    .no-print{
+        display:none !important;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="cv-container">
+
+<!-- HEADER -->
+
+<div class="cv-header">
+
+    <div class="cv-title">
+
+        <h1>CURRICULUM VITAE</h1>
+
+        <h3>OF</h3>
+
+        <h2
+            contenteditable="true"
+            class="editable-name"
+            data-placeholder="Your Name">
+        </h2>
+
+    </div>
+
+    <div class="photo-box">
+
+        <img
+        id="photoPreview"
+        src="https://via.placeholder.com/120x150?text=Photo"
+        alt="Photo">
+
+        <br><br>
+
+        <input
+        type="file"
+        id="photoInput"
+        class="no-print"
+        accept="image/*">
+
+    </div>
+
+</div>
+
+
+<script>
+document.getElementById("photoInput")
+.addEventListener("change", function(e){
+
+    const file = e.target.files[0];
+
+    if(!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(event){
+
+        document.getElementById("photoPreview")
+        .src = event.target.result;
+
+    };
+
+    reader.readAsDataURL(file);
+
+});
+</script>
+<!-- =========================
+     MAILING ADDRESS
+========================= -->
+
+<h2 class="section-title">Mailing Address</h2>
+
+<div id="mailingBox">
+
+    <div class="info-line">
+        <span class="label">C/O:</span>
+        <span contenteditable="true"
+              class="placeholder"
+              data-placeholder="Care of Name"></span>
+    </div>
+
+    <div class="info-line">
+        <span class="label">Village:</span>
+        <span contenteditable="true"
+              class="placeholder"
+              data-placeholder="Village Name"></span>
+    </div>
+
+    <div class="info-line">
+        <span class="label">Post:</span>
+        <span contenteditable="true"
+              class="placeholder"
+              data-placeholder="Post Office"></span>
+    </div>
+
+    <div class="info-line">
+        <span class="label">Thana:</span>
+        <span contenteditable="true"
+              class="placeholder"
+              data-placeholder="Thana Name"></span>
+    </div>
+
+    <div class="info-line">
+        <span class="label">District:</span>
+        <span contenteditable="true"
+              class="placeholder"
+              data-placeholder="District Name"></span>
+    </div>
+
+    <div class="info-line">
+        <span class="label">Mobile:</span>
+        <span contenteditable="true"
+              class="placeholder"
+              data-placeholder="+8801XXXXXXXXX"></span>
+    </div>
+
+    <div class="info-line">
+        <span class="label">Email:</span>
+        <span contenteditable="true"
+              class="placeholder"
+              data-placeholder="example@gmail.com"></span>
+    </div>
+
+</div>
+
+<button type="button"
+        class="btn no-print"
+        onclick="addMailingRow()">
+        ➕ Add Mailing Row
+</button>
+
+<style>
+
+.section-title{
+    font-size:22px;
+    font-weight:bold;
+    margin-top:20px;
+    margin-bottom:10px;
+    border-bottom:1px solid #999;
+    padding-bottom:5px;
+}
+
+.info-line{
+    margin:8px 0;
+}
+
+.label{
+    display:inline-block;
+    width:120px;
+    font-weight:bold;
+}
+
+.placeholder{
+    display:inline-block;
+    min-width:220px;
+    outline:none;
+}
+
+.placeholder:empty:before{
+    content:attr(data-placeholder);
+    color:#999;
+}
+
+.remove-btn{
+    margin-left:10px;
+    cursor:pointer;
+}
+
+@media(max-width:600px){
+
+    .label{
+        display:block;
+        width:100%;
+        margin-bottom:3px;
+    }
+
+    .placeholder{
+        display:block;
+        width:100%;
+    }
+
+}
+
+</style>
+
+<script>
+
+function addMailingRow(){
+
+    let box = document.getElementById("mailingBox");
+
+    let row = document.createElement("div");
+
+    row.className = "info-line";
+
+    row.innerHTML = `
+
+        <span class="label"
+              contenteditable="true">
+              New Label
+        </span>
+
+        <span class="placeholder"
+              contenteditable="true"
+              data-placeholder="Enter Information">
+        </span>
+
+        <button type="button"
+                class="remove-btn no-print"
+                onclick="this.parentElement.remove()">
+                Remove
+        </button>
+
+    `;
+
+    box.appendChild(row);
+}
+
+</script>
+<!-- =========================
+     PERSONAL INFORMATION
+========================= -->
+
+<h2 class="section-title">Personal Information</h2>
+
+<div id="personalBox">
+
+    <div class="info-line">
+        <span class="label">Father's Name:</span>
+        <span contenteditable="true"
+              class="placeholder"
+              data-placeholder="Father's Name"></span>
+    </div>
+
+    <div class="info-line">
+        <span class="label">Mother's Name:</span>
+        <span contenteditable="true"
+              class="placeholder"
+              data-placeholder="Mother's Name"></span>
+    </div>
+
+    <div class="info-line">
+        <span class="label">Date of Birth:</span>
+        <span contenteditable="true"
+              class="placeholder"
+              data-placeholder="DD-MM-YYYY"></span>
+    </div>
+
+    <div class="info-line">
+        <span class="label">Nationality:</span>
+        <span contenteditable="true"
+              class="placeholder"
+              data-placeholder="Bangladeshi"></span>
+    </div>
+
+    <div class="info-line">
+        <span class="label">NID No:</span>
+        <span contenteditable="true"
+              class="placeholder"
+              data-placeholder="National ID Number"></span>
+    </div>
+
+    <div class="info-line">
+        <span class="label">Religion:</span>
+        <span contenteditable="true"
+              class="placeholder"
+              data-placeholder="Islam"></span>
+    </div>
+
+    <div class="info-line">
+        <span class="label">Marital Status:</span>
+        <span contenteditable="true"
+              class="placeholder"
+              data-placeholder="Single / Married"></span>
+    </div>
+
+    <div class="info-line">
+        <span class="label">Blood Group:</span>
+        <span contenteditable="true"
+              class="placeholder"
+              data-placeholder="A+"></span>
+    </div>
+
+</div>
+
+<button type="button"
+        class="btn no-print"
+        onclick="addPersonalRow()">
+        ➕ Add Personal Info
+</button>
+
+<script>
+
+function addPersonalRow(){
+
+    let box = document.getElementById("personalBox");
+
+    let row = document.createElement("div");
+
+    row.className = "info-line";
+
+    row.innerHTML = `
+        <span class="label"
+              contenteditable="true">
+              New Label
+        </span>
+
+        <span class="placeholder"
+              contenteditable="true"
+              data-placeholder="Enter Information">
+        </span>
+
+        <button type="button"
+                class="remove-btn no-print"
+                onclick="this.parentElement.remove()">
+                Remove
+        </button>
+    `;
+
+    box.appendChild(row);
+}
+
+</script>
+<!-- EDUCATIONAL QUALIFICATION -->
+<h2 class="section-title">Educational Qualification</h2>
+
+<table id="eduTable" border="1" cellspacing="0" cellpadding="5" width="100%">
+    <thead>
+        <tr>
+            <th>Degree</th>
+            <th>Board / University</th>
+            <th>Group / Subject</th>
+            <th>Year</th>
+            <th>Result</th>
+            <th class="no-print">Remove</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        <tr>
+            <td><input type="text" placeholder="SSC"></td>
+
+            <td><input type="text" placeholder="Dhaka"></td>
+
+            <td><input type="text" placeholder="Science"></td>
+
+            <td><input type="text" placeholder="2025"></td>
+
+            <td><input type="text" placeholder="GPA 5.00"></td>
+
+            <td class="no-print">
+                <button type="button" onclick="removeEduRow(this)">❌</button>
+            </td>
+        </tr>
+
+    </tbody>
+</table>
+
+<button type="button"
+        class="btn no-print"
+        onclick="addEduRow()">
+        ➕ Add Education Row
+</button>
+
+<style>
+#eduTable{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+}
+
+#eduTable th,
+#eduTable td{
+    border:1px solid #999;
+    padding:6px;
+    text-align:center;
+}
+
+#eduTable input{
+    width:95%;
+    border:none;
+    outline:none;
+    padding:4px;
+    font-family:inherit;
+}
+
+@media(max-width:600px){
+
+    #eduTable{
+        font-size:12px;
+    }
+
+    #eduTable input{
+        width:90%;
+    }
+
+}
+</style>
+
+<script>
+
+function addEduRow(){
+
+    let tbody = document.querySelector("#eduTable tbody");
+
+    let row = document.createElement("tr");
+
+    row.innerHTML = `
+        <td><input type="text" placeholder="Degree"></td>
+
+        <td><input type="text" placeholder="Board / University"></td>
+
+        <td><input type="text" placeholder="Group / Subject"></td>
+
+        <td><input type="text" placeholder="Year"></td>
+
+        <td><input type="text" placeholder="Result"></td>
+
+        <td class="no-print">
+            <button type="button"
+                    onclick="removeEduRow(this)">
+                    ❌
+            </button>
+        </td>
+    `;
+
+    tbody.appendChild(row);
+}
+
+function removeEduRow(btn){
+    btn.closest("tr").remove();
+}
+
+</script>
+<!-- LANGUAGE PROFICIENCY -->
+
+<h2 class="section-title">Language Proficiency</h2>
+
+<table id="langTable" border="1" cellspacing="0" cellpadding="5" width="100%">
+    <thead>
+        <tr>
+            <th>Language</th>
+            <th>Speaking</th>
+            <th>Writing</th>
+            <th>Reading</th>
+            <th class="no-print">Remove</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        <tr>
+            <td><input type="text" placeholder="Bangla"></td>
+
+            <td><input type="text" placeholder="Fluent"></td>
+
+            <td><input type="text" placeholder="Excellent"></td>
+
+            <td><input type="text" placeholder="Excellent"></td>
+
+            <td class="no-print">
+                <button type="button"
+                        onclick="removeLangRow(this)">
+                        ❌
+                </button>
+            </td>
+        </tr>
+
+    </tbody>
+</table>
+
+<button type="button"
+        class="btn no-print"
+        onclick="addLangRow()">
+        ➕ Add Language
+</button>
+
+<style>
+
+#langTable{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+}
+
+#langTable th,
+#langTable td{
+    border:1px solid #999;
+    padding:6px;
+    text-align:center;
+}
+
+#langTable input{
+    width:95%;
+    border:none;
+    outline:none;
+    padding:4px;
+    font-family:inherit;
+}
+
+@media(max-width:600px){
+
+    #langTable{
+        font-size:12px;
+    }
+
+    #langTable input{
+        width:90%;
+    }
+
+}
+
+</style>
+
+<script>
+
+function addLangRow(){
+
+    let tbody = document.querySelector("#langTable tbody");
+
+    let row = document.createElement("tr");
+
+    row.innerHTML = `
+        <td><input type="text" placeholder="Language"></td>
+
+        <td><input type="text" placeholder="Speaking"></td>
+
+        <td><input type="text" placeholder="Writing"></td>
+
+        <td><input type="text" placeholder="Reading"></td>
+
+        <td class="no-print">
+            <button type="button"
+                    onclick="removeLangRow(this)">
+                    ❌
+            </button>
+        </td>
+    `;
+
+    tbody.appendChild(row);
+}
+
+function removeLangRow(btn){
+    btn.closest("tr").remove();
+}
+
+</script>
+<!-- ================= SKILLS ================= -->
+
+<h2 class="section-title">Skills</h2>
+
+<table id="skillTable" border="1" cellspacing="0" cellpadding="5" width="100%">
+    <thead>
+        <tr>
+            <th>Skill Name</th>
+            <th class="no-print">Remove</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        <tr>
+
+            <td>
+                <input type="text"
+                       placeholder="Microsoft Office">
+            </td>
+
+            <td class="no-print">
+                <button type="button"
+                        onclick="removeSkillRow(this)">
+                    ❌
+                </button>
+            </td>
+
+        </tr>
+
+    </tbody>
+</table>
+
+<button type="button"
+        class="btn no-print"
+        onclick="addSkillRow()">
+    ➕ Add Skill
+</button>
+
+<script>
+
+function addSkillRow(){
+
+    let tbody = document.querySelector("#skillTable tbody");
+
+    let row = document.createElement("tr");
+
+    row.innerHTML = `
+        <td>
+            <input type="text"
+                   placeholder="Enter Skill">
+        </td>
+
+        <td class="no-print">
+            <button type="button"
+                    onclick="removeSkillRow(this)">
+                ❌
+            </button>
+        </td>
+    `;
+
+    tbody.appendChild(row);
+}
+
+function removeSkillRow(btn){
+
+    btn.closest("tr").remove();
+
+}
+
+</script>
+<!-- ================= REFERENCES ================= -->
+
+<h2 class="section-title">References</h2>
+
+<table id="refTable" border="1" cellspacing="0" cellpadding="0" width="100%">
+
+<thead>
+<tr>
+    <th>Name</th>
+    <th>Designation</th>
+    <th>Organization</th>
+    <th>Mobile</th>
+    <th class="no-print">Remove</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>
+<input type="text" placeholder="Mr. Rahim Uddin">
+</td>
+
+<td>
+<input type="text" placeholder="Principal">
+</td>
+
+<td>
+<input type="text" placeholder="Dhaka College">
+</td>
+
+<td>
+<input type="text" placeholder="+8801XXXXXXXXX">
+</td>
+
+<td class="no-print">
+<button type="button"
+onclick="removeRefRow(this)">
+❌
+</button>
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+<button type="button"
+class="btn no-print"
+onclick="addRefRow()">
+
+➕ Add Reference
+
+</button>
+
+<script>
+
+function addRefRow(){
+
+let tbody=document.querySelector("#refTable tbody");
+
+let row=document.createElement("tr");
+
+row.innerHTML=`
+
+<td>
+<input type="text" placeholder="Name">
+</td>
+
+<td>
+<input type="text" placeholder="Designation">
+</td>
+
+<td>
+<input type="text" placeholder="Organization">
+</td>
+
+<td>
+<input type="text" placeholder="Mobile">
+</td>
+
+<td class="no-print">
+<button type="button"
+onclick="removeRefRow(this)">
+❌
+</button>
+</td>
+
+`;
+
+tbody.appendChild(row);
+
+}
+
+function removeRefRow(btn){
+
+btn.closest("tr").remove();
+
+}
+
+</script>
+
+<!-- ================= DATE & SIGNATURE ================= -->
+
+<h2 class="section-title">Declaration</h2>
+
+<p style="text-align:justify;line-height:1.8;">
+I hereby declare that all the information stated above are true and correct to the best of my knowledge and belief.
+</p>
+
+<br><br>
+
+<div class="signature-section">
+
+    <div class="date-box">
+
+        Date:
+        <span id="currentDate"></span>
+
+    </div>
+
+    <div class="sign-box">
+
+        <img
+        id="signPreview"
+        src="https://via.placeholder.com/150x50?text=Signature"
+        alt="Signature">
+
+        <br>
+
+        <input
+        type="file"
+        id="signInput"
+        class="no-print"
+        accept="image/*">
+
+        <hr>
+
+        <b>Signature</b>
+
+    </div>
+
+</div>
+
+<style>
+
+.signature-section{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    margin-top:40px;
+}
+
+.date-box{
+    font-size:18px;
+}
+
+.sign-box{
+    width:200px;
+    text-align:center;
+}
+
+.sign-box img{
+    max-width:150px;
+    max-height:60px;
+}
+
+@media(max-width:600px){
+
+    .signature-section{
+        flex-direction:column;
+        gap:30px;
+        align-items:center;
+    }
+
+}
+
+</style>
+
+<script>
+
+/* Current Date */
+
+let today = new Date();
+
+document.getElementById("currentDate").innerHTML =
+today.toLocaleDateString();
+
+/* Signature Upload */
+
+document.getElementById("signInput")
+.addEventListener("change",function(e){
+
+    let file = e.target.files[0];
+
+    if(!file) return;
+
+    let reader = new FileReader();
+
+    reader.onload = function(event){
+
+        document.getElementById("signPreview")
+        .src = event.target.result;
+
+    };
+
+    reader.readAsDataURL(file);
+
+});
+
+</script>
+<!-- ================= PRINT BUTTON ================= -->
+
+<div class="print-area no-print">
+
+    <button onclick="window.print()"
+            class="print-btn">
+
+        🖨 Print / Save PDF
+
+    </button>
+
+</div>
+
+</div>
+
+</body>
+
+
+
